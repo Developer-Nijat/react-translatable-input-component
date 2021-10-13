@@ -27,6 +27,20 @@ values = {
 Memoized version: 
 
 ```
+// input type text
+<MemoizedTranslatableInput
+    type={inputTypes.text}
+    onChangeValue={(val) => formik.setFieldValue('title', val)}
+    value={formik.values.title}
+    customStyle={{
+        width: '100%',
+        flex: 1,
+        marginTop: 0,
+        marginBottom: 8
+    }}
+/>
+
+// input type textarea
 <MemoizedTranslatableInput
     type={inputTypes.textarea}
     onChangeValue={(val) => formik.setFieldValue('description', val)}
