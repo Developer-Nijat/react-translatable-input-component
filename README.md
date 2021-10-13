@@ -12,7 +12,7 @@ values = {
   'ru': 'Russian input'
 };
 ```
-![Preview](https://raw.githubusercontent.com/Developer-Nijat/react-translatable-input-component/master/images/image.png)
+![Preview](https://raw.githubusercontent.com/Developer-Nijat/react-translatable-input-component/master/image.png)
 
 * Using 
 
