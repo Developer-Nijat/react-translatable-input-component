@@ -1,5 +1,5 @@
 # React - Translatable Input Component
-A React Native input component that manages multiple languages.
+A React input component that manages multiple languages.
 
 * The values object
 
