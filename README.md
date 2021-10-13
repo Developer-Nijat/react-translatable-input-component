@@ -81,7 +81,9 @@ value: PropTypes.any.isRequired,
 onChangeValue: PropTypes.func,
 customStyle: PropTypes.object,
 fieldId: PropTypes.string,
-disabled: PropTypes.bool
+disabled: PropTypes.bool,
+textareaSelectionStyle: PropTypes.object,
+textareaContainerStyle: PropTypes.object
 ```
 
 * Dependencies
