@@ -1,27 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { InputAdornment, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-
-const defaultStyle = {
-    width: '100%',
-    flex: 1,
-    marginTop: 8,
-    marginBottom: 8
-}
-
-const useStyles = makeStyles(theme => ({
-    selectIcon: {
-        position: 'absolute',
-        fontSize: 14,
-        fontWeight: 500,
-        left: 5,
-        top: 35,
-        zIndex: 3,
-        cursor: 'pointer',
-        padding: 5
-    }
-}));
 
 export function TranslatableInputComponent(props) {
     const {
@@ -32,8 +12,10 @@ export function TranslatableInputComponent(props) {
         value,
         customStyle,
         fieldId,
-        disabled
-    } = props;
+        disabled,
+        textareaSelectionStyle,
+        textareaContainerStyle
+    } = React.useMemo(() => (props), []);
 
     const classes = useStyles();
     const { languages } = useSelector((state) => state.languages);
@@ -41,8 +23,8 @@ export function TranslatableInputComponent(props) {
     const [values, setValues] = useState({});
 
     useEffect(() => {
-        setValuesMethod()
-    }, []);
+        setValuesMethod();
+    }, [value]);
 
     function setValuesMethod() {
         if (value) {
@@ -66,17 +48,17 @@ export function TranslatableInputComponent(props) {
         let obj = { ...values };
         obj[selectedLang] = value;
         setValues(obj);
-        onChangeValue(obj)
+        onChangeValue(obj, selectedLang)
     }
 
     return (
         type === inputTypes.text ?
             <TextField
                 disabled={disabled}
-                label={label || 'label'}
+                label={label || ''}
                 id={fieldId || (label + "-multi-lang-input")}
                 placeholder={placeholder || ''}
-                style={customStyle || defaultStyle}
+                style={customStyle || classes.defaultStyle}
                 value={values[selectedLang] || ''}
                 onChange={(e) => handleValueChange(e.target.value)}
                 InputProps={{
@@ -106,9 +88,9 @@ export function TranslatableInputComponent(props) {
                 }}
             /> :
             type === inputTypes.textarea ?
-                <div style={{ position: 'relative', marginTop: 20 }} className="form-group">
-                    <label>{label || 'label'}</label>
-                    <span className={classes.selectIcon}>
+                <div style={textareaContainerStyle || { position: 'relative', marginTop: 20 }} className="form-group">
+                    {label && <label>{label}</label>}
+                    <span className={!textareaSelectionStyle ? classes.selectIcon : ""} style={textareaSelectionStyle || {}}>
                         <InputAdornment position="start">
                             <Select
                                 value={selectedLang || 'az'}
@@ -147,9 +129,23 @@ export function TranslatableInputComponent(props) {
                 <TextField
                     disabled
                     value="Type is not defined"
-                    style={defaultStyle}
+                    style={classes.defaultStyle}
                 />
     );
+}
+
+export const MemoizedTranslatableInput = memo((props) => {
+    return <TranslatableInputComponent {...props} />
+}, (prevProps, nextProps) => {
+    if (prevProps.value === nextProps.value) {
+        return true; // props are equal
+    }
+    return false; // props are not equal -> update the component
+});
+
+export const inputTypes = {
+    text: 'text',
+    textarea: 'textarea'
 }
 
 TranslatableInputComponent.propTypes = {
@@ -160,10 +156,27 @@ TranslatableInputComponent.propTypes = {
     onChangeValue: PropTypes.func,
     customStyle: PropTypes.object,
     fieldId: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    textareaSelectionStyle: PropTypes.object,
+    textareaContainerStyle: PropTypes.object
 };
 
-export const inputTypes = {
-    text: 'text',
-    textarea: 'textarea'
-}
+
+const useStyles = makeStyles(theme => ({
+    defaultStyle: {
+        width: '100%',
+        flex: 1,
+        marginTop: 8,
+        marginBottom: 8
+    },
+    selectIcon: {
+        position: 'absolute',
+        fontSize: 14,
+        fontWeight: 500,
+        left: 5,
+        top: 35,
+        zIndex: 3,
+        cursor: 'pointer',
+        padding: 5
+    }
+}));
