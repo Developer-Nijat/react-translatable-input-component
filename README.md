@@ -24,6 +24,30 @@ values = {
 />
 ```
 
+Memoized version: 
+
+```
+<MemoizedTranslatableInput
+    type={inputTypes.textarea}
+    onChangeValue={(val) => formik.setFieldValue('description', val)}
+    value={formik.values.description}
+    textareaSelectionStyle={{
+        position: 'absolute',
+        fontSize: 14,
+        fontWeight: 500,
+        left: 5,
+        top: 5,
+        zIndex: 3,
+        cursor: 'pointer',
+        padding: 5
+    }}
+    textareaContainerStyle={{
+        position: 'relative',
+        marginTop: 0
+    }}
+/>
+```
+
 * Currently supported types (Can be increased)
 
 ```
