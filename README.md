@@ -24,7 +24,7 @@ values = {
 />
 ```
 
-Memoized version: 
+Formik and Memoized version: 
 
 ```
 // input type text
